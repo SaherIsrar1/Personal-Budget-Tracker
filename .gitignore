@@ -33,6 +33,24 @@ migrate_working_dir/
 /build/
 /coverage/
 
+# Flutter / Dart / Build
+.dart_tool/
+.packages
+.pub/
+build/
+
+# IDE
+.metadata
+.idea/
+.vscode/
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Generated files
+**/generated_plugin_registrant.*
+
 # Symbolication related
 app.*.symbols
 

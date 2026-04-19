@@ -1,11 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import '../../core/utils/app_theme.dart';
+import '../../core/services/firestore_service.dart';
 import '../../logic/providers/auth_provider.dart';
 import '../../router/app_router.dart';
 import '../common/auth_text_field.dart';
-import 'package:budget_tracker/core/services/firestore_service.dart';
-
 
 class SignUpScreen extends StatefulWidget {
   const SignUpScreen({super.key});
@@ -62,18 +61,21 @@ class _SignUpScreenState extends State<SignUpScreen>
     );
 
     if (success && mounted) {
-      // ✅ Create Firestore user profile right after signup
+      // Create Firestore profile
       final uid = auth.uid;
       if (uid.isNotEmpty) {
-        await FirestoreService().createUserProfile(
-          uid: uid,
-          displayName: _nameCtrl.text.trim(),
-          email: _emailCtrl.text.trim(),
-        );
+        try {
+          await FirestoreService().createUserProfile(
+            uid: uid,
+            displayName: _nameCtrl.text.trim(),
+            email: _emailCtrl.text.trim(),
+          );
+        } catch (_) {}
       }
       Navigator.of(context).pushReplacementNamed(AppRouter.onboarding);
     }
   }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(

@@ -59,26 +59,26 @@ class _SignInScreenState extends State<SignInScreen>
     }
   }
 
-  // Future<void> _forgotPassword() async {
-  //   if (_emailCtrl.text.trim().isEmpty) {
-  //     ScaffoldMessenger.of(context).showSnackBar(
-  //       const SnackBar(content: Text('Enter your email first')),
-  //     );
-  //     return;
-  //   }
-  //   final auth = context.read<AuthProvider>();
-  //   final success = await auth.resetPassword(_emailCtrl.text);
-  //   if (mounted) {
-  //     // ScaffoldMessenger.of(context).showSnackBar(
-  //     //   SnackBar(
-  //     //     content: Text(success
-  //     //         ? 'Password reset email sent!'
-  //     //         : auth.errorMessage ?? 'Failed to send email'),
-  //     //     backgroundColor: success ? AppTheme.primary : AppTheme.expense,
-  //     //   ),
-  //     // );
-  //   }
-  // }
+  Future<void> _forgotPassword() async {
+    if (_emailCtrl.text.trim().isEmpty) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text('Enter your email first')),
+      );
+      return;
+    }
+    final auth = context.read<AuthProvider>();
+    final success = await auth.resetPassword(_emailCtrl.text);
+    if (mounted) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text(success
+              ? 'Password reset email sent!'
+              : auth.errorMessage ?? 'Failed to send email'),
+          backgroundColor: success ? AppTheme.primary : AppTheme.expense,
+        ),
+      );
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -171,23 +171,23 @@ class _SignInScreenState extends State<SignInScreen>
                     const SizedBox(height: 12),
 
                     // Forgot password
-                    // Align(
-                    //   alignment: Alignment.centerRight,
-                    //   child: TextButton(
-                    //     onPressed: _forgotPassword,
-                    //     style: TextButton.styleFrom(
-                    //       padding: EdgeInsets.zero,
-                    //       minimumSize: const Size(0, 32),
-                    //     ),
-                    //     child: Text(
-                    //       'Forgot password?',
-                    //       style: AppTheme.bodyMedium.copyWith(
-                    //         color: AppTheme.primary,
-                    //         fontWeight: FontWeight.w600,
-                    //       ),
-                    //     ),
-                    //   ),
-                    // ),
+                    Align(
+                      alignment: Alignment.centerRight,
+                      child: TextButton(
+                        onPressed: _forgotPassword,
+                        style: TextButton.styleFrom(
+                          padding: EdgeInsets.zero,
+                          minimumSize: const Size(0, 32),
+                        ),
+                        child: Text(
+                          'Forgot password?',
+                          style: AppTheme.bodyMedium.copyWith(
+                            color: AppTheme.primary,
+                            fontWeight: FontWeight.w600,
+                          ),
+                        ),
+                      ),
+                    ),
 
                     const SizedBox(height: 28),
 

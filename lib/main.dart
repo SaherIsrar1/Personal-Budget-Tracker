@@ -1,4 +1,3 @@
-// lib/main.dart
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -6,6 +5,7 @@ import 'package:provider/provider.dart';
 
 import 'core/services/firebase_auth_service.dart';
 import 'core/services/firestore_service.dart';
+import 'core/services/notification_service.dart';
 import 'core/utils/app_theme.dart';
 import 'data/repositories/auth_repository.dart';
 import 'data/repositories/savings_goal_repository.dart';
@@ -31,6 +31,10 @@ void main() async {
 
   await Firebase.initializeApp();
 
+  // ✅ Initialize notifications
+  await NotificationService().initialize();
+  await NotificationService().requestPermissions();
+
   runApp(const BudgetTrackerApp());
 }
 
@@ -43,16 +47,14 @@ class BudgetTrackerApp extends StatelessWidget {
     final firestoreService = FirestoreService();
     final authRepo         = AuthRepository(authService);
     final txRepo           = TransactionRepository(firestoreService);
-    final goalRepo         = SavingsGoalRepository(firestoreService); // ✅
+    final goalRepo         = SavingsGoalRepository(firestoreService);
 
     return MultiProvider(
       providers: [
         ChangeNotifierProvider(create: (_) => AuthProvider(authRepo)),
         ChangeNotifierProvider(create: (_) => TransactionProvider(txRepo)),
         ChangeNotifierProvider(create: (_) => DashboardProvider(firestoreService)),
-        ChangeNotifierProvider(                                              // ✅
-          create: (_) => SavingsGoalProvider(goalRepo),
-        ),
+        ChangeNotifierProvider(create: (_) => SavingsGoalProvider(goalRepo)),
       ],
       child: MaterialApp(
         title: 'BudgetWise',
